@@ -37,4 +37,4 @@ jobs:
           tags: |
             bednar/app-store-connect-cli:latest
             bednar/app-store-connect-cli:${{ env.VERSION }}
-          push: false
+          push: true
