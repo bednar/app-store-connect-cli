@@ -71,4 +71,4 @@ This project is released under the MIT License. See the `LICENSE` file in the re
 
 ## Contact
 
-If you have any questions or need help, please open an issue in this GitHub repository for support and inquiries. Follow this link to create a new issue: [Open an Issue](https://github.com/bednar/app-store-connect-cli/new)
+If you have any questions or need help, please open an issue in this GitHub repository for support and inquiries. Follow this link to create a new issue: [Open an Issue](https://github.com/bednar/app-store-connect-cli/issues/new)

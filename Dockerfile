@@ -1,6 +1,4 @@
-FROM python:3.12
-
-# https://stackoverflow.com/questions/51490937/how-to-build-docker-image-to-refer-to-the-python-library-in-venv
+FROM python:3.12-slim
 
 RUN apt-get update
 RUN apt-get install -y gcc python3-dev
