@@ -1,7 +1,10 @@
-FROM python:3.12-slim
+#
+# Builder image
+#
+FROM python:3.12-slim as builder
 
-RUN apt-get update
-RUN apt-get install -y gcc python3-dev
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends gcc python3-dev
 
 # Directories paths as environment variables
 ENV APP_HOME=/app
@@ -11,19 +14,43 @@ ENV VIRTUAL_ENV=/app/venv
 WORKDIR $APP_HOME
 RUN mkdir $VIRTUAL_ENV
 
-# Use a non-root user
-RUN useradd -m cli
-RUN chown cli:cli $VIRTUAL_ENV
-USER cli
-
 # Copy requirements.txt
-COPY --chown=cli:cli requirements.txt $APP_HOME
+COPY requirements.txt $APP_HOME
 
-# Active venv
+# Active Python venv
 RUN python -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
+# Install requirements.txt
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+#
+# Production size image
+#
+FROM python:3.12-slim as production
+
+# Directories paths as environment variables
+ENV APP_HOME=/app
+ENV VIRTUAL_ENV=/app/venv
+
+# Set PATH to include venv
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+
+# Working directory
+WORKDIR $APP_HOME
+RUN mkdir $VIRTUAL_ENV
+
+# Use a non-root user
+RUN useradd -m cli && \
+    chown cli:cli $VIRTUAL_ENV
+USER cli
+
+# Copy sources from builder image
+COPY --from=builder --chown=cli:cli $VIRTUAL_ENV $VIRTUAL_ENV
+
+# Active Python venv
+RUN python -m venv $VIRTUAL_ENV
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 ENTRYPOINT ["app-store-connect"]
