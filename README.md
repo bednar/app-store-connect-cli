@@ -67,7 +67,7 @@ We welcome contributions from the community. Whether it's improving the Dockerfi
 
 ## License
 
-This project is released under the MIT License. See the `LICENSE` file in the repository for more details.
+This project is released under the MIT License. See the [`LICENSE`](https://github.com/bednar/app-store-connect-cli?tab=MIT-1-ov-file#readme) file in the repository for more details.
 
 ## Contact
 
