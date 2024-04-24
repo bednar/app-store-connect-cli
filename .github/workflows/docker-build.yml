@@ -20,4 +20,4 @@ jobs:
         run: docker build -t mobile-app-cli:latest .
 
       - name: Run image
-        run: docker run -it --rm mobile-app-cli:latest --help
+        run: docker run -it -t --rm mobile-app-cli:latest --help
