@@ -1,4 +1,4 @@
-FROM python:3.11
+FROM python:3.12
 
 # https://stackoverflow.com/questions/51490937/how-to-build-docker-image-to-refer-to-the-python-library-in-venv
 
