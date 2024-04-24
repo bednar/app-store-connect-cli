@@ -19,7 +19,8 @@ jobs:
 
       - name: Extract version tag
         id: get_version
-        run: echo "##[set-output name=version;]$(echo ${{ github.ref }} | sed 's/refs\/tags\/v//')"
+        run: |
+          echo "VERSION=$(echo ${{ github.ref }} | sed 's/refs\/tags\/v//')" >> $GITHUB_ENV
 
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v2
@@ -28,5 +29,5 @@ jobs:
           file: ./Dockerfile
           tags: |
             bednar/app-store-connect-cli:latest
-            bednar/app-store-connect-cli:${{ steps.get_version.outputs.version }}
+            bednar/app-store-connect-cli:${{ env.VERSION }}
           push: false
