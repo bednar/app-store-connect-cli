@@ -27,7 +27,8 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
+          platforms: linux/amd64,linux/arm64
           tags: |
             bednar/app-store-connect-cli:latest
             bednar/app-store-connect-cli:${{ env.VERSION }}
-          push: true
+          push: false
