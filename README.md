@@ -1,7 +1,10 @@
 
 # App Store Connect CLI Tools Docker Image
 
-This Docker image is designed to simplify interactions with App Store Connect via [Codemagic CLI Tools](https://github.com/codemagic-ci-cd/cli-tools), facilitating the automation of app management tasks.
+[![Docker Image Version](https://img.shields.io/docker/v/bednar/app-store-connect-cli)
+](https://hub.docker.com/r/bednar/app-store-connect-cli)
+
+This Docker image is designed to simplify interactions with App Store Connect via [Codemagic CLI Tools](https://github.com/codemagic-ci-cd/cli-tools/blob/master/docs/app-store-connect/README.md), facilitating the automation of app management tasks.
 
 ## Prerequisites
 
@@ -32,7 +35,7 @@ With the Docker image, you can execute various commands to interact with App Sto
 List all applications in your App Store Connect account:
 
 ```bash
-docker run -it --rm bednar/app-store-connect-cli fetch-apps
+docker run -it --rm bednar/app-store-connect-cli apps list
 ```
 
 ### Getting App Information
@@ -40,7 +43,7 @@ docker run -it --rm bednar/app-store-connect-cli fetch-apps
 Retrieve detailed information about a specific app using its App Store Connect ID:
 
 ```bash
-docker run -it --rm bednar/app-store-connect-cli get-app-info 123456789
+docker run -it --rm bednar/app-store-connect-cli apps get 123456789
 ```
 
 ### Submitting an App for Review
@@ -53,10 +56,24 @@ docker run -it --rm bednar/app-store-connect-cli publish-application --app-id 12
 
 ## Configuring Codemagic CLI
 
-Set up authentication credentials for App Store Connect to use [Codemagic CLI Tools](https://github.com/codemagic-ci-cd/cli-tools). These credentials can be passed as environment variables:
+To successfully interact with App Store Connect, you need to set up authentication credentials 
+for [Codemagic CLI Tools](https://github.com/codemagic-ci-cd/cli-tools/blob/master/docs/app-store-connect/README.md). The following steps guide you through the process:
 
+1. Create a new key in the App Store Connect account. Go to the [App Store Connect](https://appstoreconnect.apple.com/)
+   website and navigate to the `Users and Access` section. Click on the `Integrations` tab and create a new key. 
+   Download the key and save it securely. On the page, you can also view the Key identifier and Issuer ID.
+2. These credentials can be passed to [Codemagic CLI Tools](https://github.com/codemagic-ci-cd/cli-tools/blob/master/docs/app-store-connect/README.md) as environment variables:
+   - `APP_STORE_CONNECT_ISSUER_ID`: The Issuer ID from the Integrations page - `12345678-1234-1234-1234-123456789012`
+   - `APP_STORE_CONNECT_KEY_IDENTIFIER`: The Key identifier from the Integrations page - `12345678`
+   - `APP_STORE_CONNECT_PRIVATE_KEY`: The downloaded private key from the App Store Connect key - `AuthKey_123456789.p8`
+3. You can pass these environment variables to the Docker container using the `-e` flag. Here is an example:
+   
 ```bash
-docker run -e APP_STORE_CONNECT_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----...-----END PRIVATE KEY-----"            -e APP_STORE_CONNECT_KEY_ID="ABC1234567"            -e APP_STORE_CONNECT_ISSUER_ID="12345678-1234-1234-1234-123456789abc"            -it --rm bednar/app-store-connect-cli <command>
+docker run -it --rm \
+  -e APP_STORE_CONNECT_ISSUER_ID="12345678-1234-1234-1234-123456789012" \
+  -e APP_STORE_CONNECT_KEY_IDENTIFIER="12345678" \
+  -e APP_STORE_CONNECT_PRIVATE_KEY="`cat ./AuthKey_123456789.p8`" \
+  -it --rm bednar/app-store-connect-cli <command>
 ```
 
 Replace `<command>` with any available Codemagic CLI command.
