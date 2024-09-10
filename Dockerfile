@@ -1,7 +1,7 @@
 #
 # Builder image
 #
-FROM python:3.12.5-slim as builder
+FROM python:3.12.6-slim as builder
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends gcc python3-dev
@@ -28,7 +28,7 @@ RUN pip install --upgrade pip && \
 #
 # Production size image
 #
-FROM python:3.12.5-slim as production
+FROM python:3.12.6-slim as production
 
 # Directories paths as environment variables
 ENV APP_HOME=/app
